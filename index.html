@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>House of Kelp — Packaging that disappears, not the ocean</title>
+<link rel="icon" href="assets/logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0F1B16;
+    --ink-2:#16261F;
+    --paper:#EFEAD9;
+    --paper-2:#E4DDC6;
+    --kelp:#2F6B4F;
+    --glow:#C6FF5E;
+    --text-on-ink:#EFEAD9;
+    --text-on-ink-dim:#8FA396;
+    --text-on-paper:#14201A;
+    --text-on-paper-dim:#5C6B60;
+    --radius:2px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter',sans-serif;
+    background:var(--ink);
+    color:var(--text-on-ink);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:500;letter-spacing:-0.01em;}
+  a{color:inherit;}
+  img{max-width:100%;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 32px;}
+  section{padding:120px 0;}
+  @media (max-width:720px){ section{padding:72px 0;} .wrap{padding:0 20px;} }
+
+  /* nav */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(15,27,22,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(239,234,217,0.08);
+  }
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:76px;}
+  .logo{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-size:1.15rem;}
+  .logo img{height:40px;width:40px;object-fit:contain;flex-shrink:0;}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    padding:13px 26px;border-radius:var(--radius);
+    font-weight:600;font-size:0.95rem;cursor:pointer;border:none;
+    transition:transform 0.15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-glow{background:var(--glow);color:var(--ink);}
+  .btn-outline{background:transparent;color:var(--text-on-ink);border:1px solid rgba(239,234,217,0.3);}
+  .btn-outline-dark{background:transparent;color:var(--text-on-paper);border:1px solid rgba(20,32,26,0.25);}
+
+  /* hero */
+  .hero{padding:96px 0 100px;}
+  .hero .wrap{display:grid;grid-template-columns:1.15fr 0.85fr;gap:64px;align-items:center;}
+  @media (max-width:900px){ .hero .wrap{grid-template-columns:1fr;} }
+  .hero h1{font-size:clamp(2.3rem,4.6vw,3.6rem);line-height:1.08;max-width:14ch;}
+  .hero p.sub{margin-top:24px;font-size:1.15rem;color:var(--text-on-ink-dim);max-width:46ch;}
+  .hero .actions{margin-top:36px;display:flex;gap:14px;flex-wrap:wrap;}
+  .hero .fine{margin-top:16px;font-size:0.85rem;color:var(--text-on-ink-dim);}
+
+  .stamp{
+    aspect-ratio:1;border-radius:50%;
+    border:1.5px dashed rgba(198,255,94,0.5);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+  }
+  .stamp-inner{
+    width:82%;aspect-ratio:1;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #24402F, #10201A 70%);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:20px;
+  }
+  .stamp-inner .num{font-family:'Fraunces',serif;font-size:2.6rem;color:var(--glow);}
+  .stamp-inner .lbl{font-size:0.85rem;color:var(--text-on-ink-dim);margin-top:4px;max-width:16ch;}
+
+  .stats-row{display:flex;gap:40px;margin-top:56px;flex-wrap:wrap;border-top:1px solid rgba(239,234,217,0.1);padding-top:32px;}
+  .stat b{display:block;font-family:'Fraunces',serif;font-size:1.7rem;color:var(--glow);}
+  .stat span{font-size:0.88rem;color:var(--text-on-ink-dim);}
+
+  /* problem section - paper */
+  .problem{background:var(--paper);color:var(--text-on-paper);}
+  .problem h2{font-size:clamp(1.8rem,3.4vw,2.6rem);max-width:18ch;}
+  .problem .lede{margin-top:18px;font-size:1.1rem;color:var(--text-on-paper-dim);max-width:52ch;}
+
+  .decay{margin-top:56px;display:flex;flex-direction:column;gap:22px;}
+  .decay-row{display:grid;grid-template-columns:140px 1fr 90px;align-items:center;gap:16px;}
+  @media (max-width:600px){ .decay-row{grid-template-columns:90px 1fr 70px;} }
+  .decay-label{font-size:0.95rem;font-weight:600;}
+  .decay-track{height:14px;background:rgba(20,32,26,0.08);border-radius:99px;overflow:hidden;}
+  .decay-fill{height:100%;border-radius:99px;transform-origin:left;transform:scaleX(0);transition:transform 1.2s cubic-bezier(.2,.7,.2,1);}
+  .decay-fill.plastic{background:#B4483A;}
+  .decay-fill.kelp{background:var(--kelp);}
+  .decay-value{font-size:0.95rem;text-align:right;color:var(--text-on-paper-dim);}
+
+  /* solution - ink */
+  .solution h2{font-size:clamp(1.8rem,3.4vw,2.6rem);max-width:16ch;}
+  .grid3{margin-top:56px;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(239,234,217,0.1);}
+  @media (max-width:800px){ .grid3{grid-template-columns:1fr;} }
+  .grid3 > div{background:var(--ink);padding:36px 32px;}
+  .grid3 h3{font-size:1.25rem;margin-bottom:10px;}
+  .grid3 p{color:var(--text-on-ink-dim);font-size:0.98rem;}
+  .icon-mark{width:34px;height:34px;border:1.5px solid var(--glow);border-radius:50%;margin-bottom:20px;position:relative;}
+  .icon-mark::after{content:'';position:absolute;inset:8px;border-radius:50%;background:var(--glow);opacity:0.4;}
+
+  /* how it works - paper */
+  .how{background:var(--paper);color:var(--text-on-paper);}
+  .how h2{font-size:clamp(1.8rem,3.4vw,2.6rem);}
+  .steps{margin-top:56px;display:flex;flex-direction:column;}
+  .step{display:grid;grid-template-columns:64px 1fr;gap:24px;padding:28px 0;border-top:1px solid rgba(20,32,26,0.12);}
+  .step:last-child{border-bottom:1px solid rgba(20,32,26,0.12);}
+  .step .n{font-family:'Fraunces',serif;font-size:1.4rem;color:var(--kelp);}
+  .step h3{font-size:1.15rem;margin-bottom:6px;}
+  .step p{color:var(--text-on-paper-dim);font-size:0.98rem;max-width:56ch;}
+
+  /* final cta */
+  .cta{
+    background:linear-gradient(180deg,#0F1B16, #16261F);
+    text-align:center;
+    border-top:1px solid rgba(239,234,217,0.08);
+  }
+  .cta h2{font-size:clamp(2rem,4vw,2.8rem);max-width:16ch;margin:0 auto;}
+  .cta p{margin-top:16px;color:var(--text-on-ink-dim);font-size:1.05rem;}
+  .cta .actions{margin-top:32px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;}
+  .cta .fine{margin-top:18px;font-size:0.85rem;color:var(--text-on-ink-dim);}
+
+  /* social proof */
+  .proof{padding:44px 0;border-top:1px solid rgba(239,234,217,0.08);border-bottom:1px solid rgba(239,234,217,0.08);}
+  .proof .wrap{display:flex;align-items:center;gap:40px;flex-wrap:wrap;}
+  .proof .lbl{font-size:0.85rem;color:var(--text-on-ink-dim);white-space:nowrap;}
+  .logos{display:flex;gap:36px;flex-wrap:wrap;align-items:center;}
+  .logos span{font-family:'Fraunces',serif;font-size:1.05rem;color:var(--text-on-ink-dim);opacity:0.75;}
+
+  footer{padding:40px 0;border-top:1px solid rgba(239,234,217,0.08);}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:0.85rem;color:var(--text-on-ink-dim);}
+
+  [data-reveal]{opacity:0;transform:translateY(14px);transition:opacity 0.7s ease, transform 0.7s ease;}
+  [data-reveal].in{opacity:1;transform:none;}
+
+  @media (prefers-reduced-motion: reduce){
+    [data-reveal]{opacity:1;transform:none;transition:none;}
+    .decay-fill{transition:none;}
+    html{scroll-behavior:auto;}
+  }
+  :focus-visible{outline:2px solid var(--glow);outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo"><img src="assets/logo.png" alt="House of Kelp"></div>
+    <a href="/request-sample" class="btn btn-outline">Request a Sample Kit</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <h1>Your packaging outlives your product by four hundred years. Ours is gone in eighteen days.</h1>
+      <p class="sub">House of Kelp replaces single-use plastic with edible, compostable packaging grown from seaweed — food-safe, tasteless, and built to disappear.</p>
+      <div class="actions">
+        <a href="/request-sample" class="btn btn-glow">Request a Sample Kit</a>
+        <a href="#how" class="btn btn-outline">See how it works</a>
+      </div>
+      <p class="fine">No purchase order needed. Samples ship in 5 business days.</p>
+      <div class="stats-row">
+        <div class="stat"><b>18 days</b><span>to fully biodegrade</span></div>
+        <div class="stat"><b>0%</b><span>plastic, ever</span></div>
+        <div class="stat"><b>40+</b><span>food brands piloting</span></div>
+      </div>
+    </div>
+    <div class="stamp" aria-hidden="true">
+      <div class="stamp-inner">
+        <div class="num">100%</div>
+        <div class="lbl">seaweed-derived, ocean-safe</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="proof">
+  <div class="wrap">
+    <span class="lbl">Piloting with food brands including</span>
+    <div class="logos"><span>Kettle&amp;Vine</span><span>Nori&amp;Co</span><span>Farrow Foods</span><span>Bluewater Snacks</span></div>
+  </div>
+</div>
+
+<section class="problem">
+  <div class="wrap">
+    <h2 data-reveal>Plastic packaging doesn't decompose. It just becomes someone else's problem.</h2>
+    <p class="lede" data-reveal>Eight million tons of plastic packaging reach the ocean every year. It doesn't break down — it breaks apart, into pieces small enough to end up back on a plate.</p>
+    <div class="decay">
+      <div class="decay-row">
+        <div class="decay-label">Plastic wrap</div>
+        <div class="decay-track"><div class="decay-fill plastic" data-width="100"></div></div>
+        <div class="decay-value">400 years</div>
+      </div>
+      <div class="decay-row">
+        <div class="decay-label">House of Kelp</div>
+        <div class="decay-track"><div class="decay-fill kelp" data-width="1.2"></div></div>
+        <div class="decay-value">18 days</div>
+      </div>
+    </div>
+    <p class="lede" style="margin-top:28px;font-size:0.98rem;" data-reveal>Production runs start at $0.04 per unit at 10,000+ units — samples are free.</p>
+  </div>
+</section>
+
+<section class="solution">
+  <div class="wrap">
+    <h2 data-reveal>One material, three ways to use it.</h2>
+    <div class="grid3">
+      <div data-reveal>
+        <div class="icon-mark"></div>
+        <h3>Edible film</h3>
+        <p>Wraps sauces, seasoning packets, and single-serve portions. Dissolves in hot water or gets eaten with the meal.</p>
+      </div>
+      <div data-reveal>
+        <div class="icon-mark"></div>
+        <h3>Compostable trays</h3>
+        <p>Rigid enough for produce and takeout, gone in your backyard compost within three weeks.</p>
+      </div>
+      <div data-reveal>
+        <div class="icon-mark"></div>
+        <h3>Printable labels</h3>
+        <p>Full-color branding on the same base material, no plastic laminate required.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="wrap">
+    <h2 data-reveal>From your product to your shelf in three steps.</h2>
+    <div class="steps">
+      <div class="step" data-reveal>
+        <div class="n">01</div>
+        <div><h3>Tell us what you're packaging</h3><p>Send your product specs and current packaging. We'll tell you within 48 hours if kelp is a fit.</p></div>
+      </div>
+      <div class="step" data-reveal>
+        <div class="n">02</div>
+        <div><h3>We prototype it</h3><p>A working sample of your exact packaging, sized and printed, in your hands in two weeks.</p></div>
+      </div>
+      <div class="step" data-reveal>
+        <div class="n">03</div>
+        <div><h3>We scale production with you</h3><p>Our manufacturing partners take it from prototype to pallet — no new equipment on your end.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="sample">
+  <div class="wrap">
+    <h2 data-reveal>Ready to ship something that disappears on purpose?</h2>
+    <p data-reveal>Get a physical sample kit of our edible film, trays, and labels — free for teams shipping under 50,000 units a month.</p>
+    <div class="actions">
+      <a href="/request-sample" class="btn btn-glow">Request a Sample Kit</a>
+    </div>
+    <p class="fine">Ships in 5 business days · No contract required</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 House of Kelp</span>
+    <span>Made from seaweed, not petroleum</span>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        if(e.target.classList.contains('decay')){
+          e.target.querySelectorAll('.decay-fill').forEach(f=>{
+            f.style.transform = 'scaleX(' + (f.dataset.width/100) + ')';
+          });
+        }
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:0.2});
+  document.querySelectorAll('[data-reveal]').forEach(el=>io.observe(el));
+  document.querySelector('.decay') && io.observe(document.querySelector('.decay'));
+</script>
+
+</body>
+</html>
